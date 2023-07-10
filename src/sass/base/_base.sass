@@ -1,0 +1,29 @@
+*, ::after, ::before
+    margin: 0
+    padding: 0
+    box-sizing: border-box
+
+html
+    font-size: 62.5%
+    @include respond(tab-land)
+        font-size: 56.25%
+    @include respond(tab-port)
+        font-size: 50%
+    @include respond(phone)
+        font-size: 30%
+    // @include respond(big-screen)
+    //     font-size: 75%
+
+body
+    background-color: #1C121F
+
+// .container
+//     max-width: 140rem
+//     margin: 0 auto
+
+// .section
+//     transition: transform 1s, opacity 1s
+
+// .section-hidden
+//     opacity: 0
+//     transform: translateY(8rem)
