@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style-tetris-app.min.css">
-    <script defer src="js/tetris-app.js"></script>
+    <script defer type="module" src="js/tetris-app.js"></script>
     <title>TETRIS-GAME</title>
 </head>
 
@@ -218,13 +218,13 @@
                 <h2 class="playing-content__statistics-title statistics-title">GAME STATISTICS:</h2>
                 <div class="playing-content__statistics-box">
                     <p class="playing-content__statistics-level statistics-text">Level:</p>
-                    <p class="playing-content__statistics-level-display statistics-text-display">1</p>
+                    <p id="level-display" class="playing-content__statistics-level-display statistics-text-display">1</p>
                     <p class="playing-content__statistics-score statistics-text">Score:</p>
-                    <p class="playing-content__statistics-score-display statistics-text-display">1000</p>
+                    <p id="score-display" class="playing-content__statistics-score-display statistics-text-display">1000</p>
                     <p class="playing-content__statistics-lines statistics-text">Lines:</p>
-                    <p class="playing-content__statistics-lines-display statistics-text-display">3</p>
+                    <p id="lines-display" class="playing-content__statistics-lines-display statistics-text-display">3</p>
                     <p class="playing-content__statistics-time statistics-text">Time:</p>
-                    <p class="playing-content__statistics-time-display statistics-text-display">30</p>
+                    <p id="time-display" class="playing-content__statistics-time-display statistics-text-display">30</p>
                 </div>
             </div>
             <div class="playing-content__next-brick next-brick-field">
@@ -242,9 +242,9 @@
                 <div class="next-brick-field__cell"></div>
             </div>
             <div class="playing-content__btn-box">
-                <button class="playing-content__btn-box-item btn-main-menu">new game</button>
-                <button class="playing-content__btn-box-item btn-main-menu">pause</button>
-                <button class="playing-content__btn-box-item btn-main-menu">settings</button>
+                <button id="btn-new-game" class="playing-content__btn-box-item btn-main-menu">new game</button>
+                <button id="btn-pause" class="playing-content__btn-box-item btn-main-menu">pause</button>
+                <button id="btn-settings" class="playing-content__btn-box-item btn-main-menu">settings</button>
             </div>
         </div>
     </div>
