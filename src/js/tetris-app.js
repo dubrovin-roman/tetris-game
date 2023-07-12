@@ -31,29 +31,30 @@ const page = {
 
 const tetris = new TetrisApp(page.playingFieldCells, page.nextBrickFieldCells);
 
-//page.btnNewGame.addEventListener("click", tetris.init);
-tetris.init();
+page.btnNewGame.addEventListener("click", () => {
+  tetris.init();
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp") {
-    tetris.arrowUp();
-  }
-});
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp") {
+      tetris.arrowUp();
+    }
+  });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight") {
-    tetris.arrowRight();
-  }
-});
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") {
+      tetris.arrowRight();
+    }
+  });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft") {
-    tetris.arrowLeft();
-  }
-});
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      tetris.arrowLeft();
+    }
+  });
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowDown") {
-    tetris.arrowDown();
-  }
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown") {
+      tetris.arrowDown();
+    }
+  });
 });

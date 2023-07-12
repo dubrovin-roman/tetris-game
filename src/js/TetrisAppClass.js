@@ -209,6 +209,8 @@ class TetrisApp {
     if (this._isValidMove(matrix, this.tetromino.row, this.tetromino.col)) {
       this.tetromino.matrix = matrix;
     }
+    this._renderingPlayingField();
+    this._renderingTetromino();
   }
 
   // стрелки вправо
@@ -221,6 +223,8 @@ class TetrisApp {
     if (this._isValidMove(this.tetromino.matrix, this.tetromino.row, col)) {
       this.tetromino.col = col;
     }
+    this._renderingPlayingField();
+    this._renderingTetromino();
   }
 
   // стрелки влево
@@ -233,6 +237,8 @@ class TetrisApp {
     if (this._isValidMove(this.tetromino.matrix, this.tetromino.row, col)) {
       this.tetromino.col = col;
     }
+    this._renderingPlayingField();
+    this._renderingTetromino();
   }
 
   // стрелка вниз — ускорить падение
@@ -250,6 +256,8 @@ class TetrisApp {
     }
     // запоминаем строку, куда стала фигура
     this.tetromino.row = row;
+    this._renderingPlayingField();
+    this._renderingTetromino();
   }
 
   // условное движение фигуры
