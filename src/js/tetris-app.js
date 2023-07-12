@@ -2,6 +2,21 @@
 
 import { TetrisApp } from "./TetrisAppClass.js";
 
+// отрисовка чистого игрового поля с id
+function createPlayingField(playingField) {
+  playingField.innerHTML = "";
+  for (let row = 0; row < 20; row++) {
+    for (let col = 0; col < 10; col++) {
+      const tempElem = `<div id="pf-${row}-${col}" class="playing-field__cell"></div>`;
+      playingField.insertAdjacentHTML("beforeend", tempElem);
+    }
+  }
+}
+
+const playingField = document.querySelector(".container__playing-field");
+createPlayingField(playingField);
+
+// элементы на странице
 const page = {
   playingFieldCells: document.querySelectorAll(".playing-field__cell"),
   levelDisplay: document.querySelector("#level-display"),
@@ -13,3 +28,32 @@ const page = {
   btnPause: document.querySelector("#btn-pause"),
   btnSettings: document.querySelector("#btn-settings"),
 };
+
+const tetris = new TetrisApp(page.playingFieldCells, page.nextBrickFieldCells);
+
+//page.btnNewGame.addEventListener("click", tetris.init);
+tetris.init();
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") {
+    tetris.arrowUp();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") {
+    tetris.arrowRight();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") {
+    tetris.arrowLeft();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown") {
+    tetris.arrowDown();
+  }
+});
