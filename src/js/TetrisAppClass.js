@@ -41,12 +41,20 @@ const tetrominos = {
 class TetrisApp {
   playField = [];
   tetrominoSequence = [];
+  level = 0;
   score = 0;
   lines = 0;
-  gameOver = false;
+  gameOver = true;
   nextBrick;
 
-  constructor(playingFieldCells, nextBrickFieldCells) {
+  constructor(
+    playingFieldCells,
+    nextBrickFieldCells,
+    levelDisplay,
+    scoreDisplay,
+    linesDisplay,
+    timeDisplay
+  ) {
     // заполняем сразу массив пустыми ячейками
     for (let row = -2; row < 20; row++) {
       this.playField[row] = [];
@@ -57,6 +65,10 @@ class TetrisApp {
     }
     this.playingFieldCells = Array.from(playingFieldCells);
     this.nextBrickFieldCells = Array.from(nextBrickFieldCells);
+    this.scoreDisplay = scoreDisplay;
+    this.linesDisplay = linesDisplay;
+    this.levelDisplay = levelDisplay;
+    this.timeDisplay = timeDisplay;
     this.tetromino = this._getNextTetromino();
   }
 
@@ -89,6 +101,27 @@ class TetrisApp {
     }
   }
 
+  _getPoints(level, lines) {
+    let points = 0;
+    if (lines >= 4) {
+      if (level == 0) return 1200;
+      points = 1200 * (level + 1);
+    }
+    if (lines == 3) {
+      if (level == 0) return 300;
+      points = 300 * (level + 1);
+    }
+    if (lines == 2) {
+      if (level == 0) return 100;
+      points = 100 * (level + 1);
+    }
+    if (lines == 1) {
+      if (level == 0) return 40;
+      points = 40 * (level + 1);
+    }
+    return points;
+  }
+
   // получаем следующую фигуру
   _getNextTetromino() {
     // если следующей нет — генерируем
@@ -117,7 +150,7 @@ class TetrisApp {
       col: col, // текущий столбец
     };
   }
-  
+
   // получаем фигуру для следующего хода
   _getNexBrick() {
     // если следующей нет — генерируем
@@ -180,6 +213,7 @@ class TetrisApp {
 
   // когда фигура окончательна встала на своё место
   _placeTetromino() {
+    let tempLines = 0;
     // обрабатываем все строки и столбцы в игровом поле
     for (let row = 0; row < this.tetromino.matrix.length; row++) {
       for (let col = 0; col < this.tetromino.matrix[row].length; col++) {
@@ -202,6 +236,7 @@ class TetrisApp {
       // если ряд заполнен
       if (this.playField[row].every((cell) => !!cell)) {
         // очищаем его и опускаем всё вниз на одну клетку
+        tempLines++;
         for (let r = row; r >= 0; r--) {
           for (let c = 0; c < this.playField[r].length; c++) {
             this.playField[r][c] = this.playField[r - 1][c];
@@ -218,6 +253,15 @@ class TetrisApp {
 
     // отрисоваваем nextBrick
     this._renderingNexBrick();
+
+    // добавляем соженные линии и набранные очки за ход к общим
+    if (tempLines) {
+      this.lines += tempLines;
+      this.score += this._getPoints(this.level, tempLines);
+    }
+
+    // отрисовываем level score lines
+    this._renderingLevelScoreLines();
   }
 
   // показываем надпись Game Over
@@ -346,7 +390,27 @@ class TetrisApp {
     }
   }
 
+  // отрисовка уровня, общего счета, соженных линий
+  _renderingLevelScoreLines() {
+    this.levelDisplay.innerText = `${this.level}`;
+    this.scoreDisplay.innerText = `${this.score}`;
+    this.linesDisplay.innerText = `${this.lines}`;
+  }
+
+  // отображения времени игры
+  _showTimeOfGame() {
+    let time = 0;
+    const intervalTimeId = setInterval(() => {
+      this.timeDisplay.innerText = `${time}`;
+      time++;
+      if (this.gameOver) clearInterval(intervalTimeId);
+    }, 1000);
+  }
+
   init() {
+    this.gameOver = false;
+    this._renderingLevelScoreLines();
+    this._showTimeOfGame();
     this._renderingPlayingField();
     this._renderingTetromino();
     this._renderingNexBrick();

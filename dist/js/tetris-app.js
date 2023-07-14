@@ -43,9 +43,21 @@ const page = {
   btnSettings: document.querySelector("#btn-settings"),
 };
 
-const tetris = new TetrisApp(page.playingFieldCells, page.nextBrickFieldCells);
+const tetris = new TetrisApp(
+  page.playingFieldCells,
+  page.nextBrickFieldCells,
+  page.levelDisplay,
+  page.scoreDisplay,
+  page.linesDisplay,
+  page.timeDisplay
+);
 
 page.btnNewGame.addEventListener("click", () => {
+  // если игра запущена нажатие на кнопку не сработает
+  if (!tetris.gameOver) {
+    return;
+  }
+
   tetris.init();
 
   document.addEventListener("keydown", (e) => {
