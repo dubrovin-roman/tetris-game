@@ -44,6 +44,7 @@ class TetrisApp {
   score = 0;
   lines = 0;
   gameOver = false;
+  nextBrick;
 
   constructor(playingFieldCells, nextBrickFieldCells) {
     // заполняем сразу массив пустыми ячейками
@@ -105,7 +106,29 @@ class TetrisApp {
     // I начинает с 21 строки (смещение -1), а все остальные — со строки 22 (смещение -2)
     const row = name === "I" ? -1 : -2;
 
+    // получаем фигуру для поля nextBrick
+    this.nextBrick = this._getNexBrick();
+
     // вот что возвращает функция
+    return {
+      name: name, // название фигуры (L, O, и т.д.)
+      matrix: matrix, // матрица с фигурой
+      row: row, // текущая строка (фигуры стартуют за видимой областью холста)
+      col: col, // текущий столбец
+    };
+  }
+  
+  // получаем фигуру для следующего хода
+  _getNexBrick() {
+    // если следующей нет — генерируем
+    if (this.tetrominoSequence.length === 0) {
+      this._generateSequence();
+    }
+    const name = this.tetrominoSequence[0];
+    const matrix = tetrominos[name];
+    // I и O стартуют с середины, остальные — чуть левее
+    const col = 4 / 2 - Math.ceil(matrix[0].length / 2);
+    const row = name === "I" ? 0 : 1;
     return {
       name: name, // название фигуры (L, O, и т.д.)
       matrix: matrix, // матрица с фигурой
@@ -192,6 +215,9 @@ class TetrisApp {
     }
     // получаем следующую фигуру
     this.tetromino = this._getNextTetromino();
+
+    // отрисоваваем nextBrick
+    this._renderingNexBrick();
   }
 
   // показываем надпись Game Over
@@ -283,7 +309,6 @@ class TetrisApp {
     for (let row = 0; row < this.tetromino.matrix.length; row++) {
       for (let col = 0; col < this.tetromino.matrix[row].length; col++) {
         if (this.tetromino.matrix[row][col]) {
-          // и снова рисуем на один пиксель меньше
           if (this.tetromino.row + row >= 0 && this.tetromino.col + col >= 0) {
             // console.log(
             //   `pf-${this.tetromino.row + row}-${this.tetromino.col + col}`
@@ -300,9 +325,31 @@ class TetrisApp {
     }
   }
 
+  // отрисовка фигуры в поле nextBrick
+  _renderingNexBrick() {
+    //очищаем поле
+    this.nextBrickFieldCells.forEach((elem) =>
+      elem.classList.remove("active-cell")
+    );
+    //отрисовываем фигуру
+    for (let row = 0; row < this.nextBrick.matrix.length; row++) {
+      for (let col = 0; col < this.nextBrick.matrix[row].length; col++) {
+        if (this.nextBrick.matrix[row][col]) {
+          const tempElem = this.nextBrickFieldCells.find(
+            (elem) =>
+              elem.id ==
+              `nbf-${this.nextBrick.row + row}-${this.nextBrick.col + col}`
+          );
+          tempElem.classList.add("active-cell");
+        }
+      }
+    }
+  }
+
   init() {
     this._renderingPlayingField();
     this._renderingTetromino();
+    this._renderingNexBrick();
     const intervalId = setInterval(() => {
       this._renderingPlayingField();
       this._conditionalMovementTetromino();

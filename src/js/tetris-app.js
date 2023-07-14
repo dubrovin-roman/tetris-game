@@ -2,7 +2,7 @@
 
 import { TetrisApp } from "./TetrisAppClass.js";
 
-// отрисовка чистого игрового поля с id
+// отрисовка чистого игрового поля с id на html
 function createPlayingField(playingField) {
   playingField.innerHTML = "";
   for (let row = 0; row < 20; row++) {
@@ -15,6 +15,20 @@ function createPlayingField(playingField) {
 
 const playingField = document.querySelector(".container__playing-field");
 createPlayingField(playingField);
+
+// отрисовка чистого поля для следующей фигуры с id на html
+function createNextBrickField(nextBrickField) {
+  nextBrickField.innerHTML = "";
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      const tempElem = `<div id="nbf-${row}-${col}" class="next-brick-field__cell"></div>`;
+      nextBrickField.insertAdjacentHTML("beforeend", tempElem);
+    }
+  }
+}
+
+const nbf = document.querySelector(".playing-content__next-brick");
+createNextBrickField(nbf);
 
 // элементы на странице
 const page = {
