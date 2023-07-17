@@ -41,6 +41,7 @@ const page = {
   btnNewGame: document.querySelector("#btn-new-game"),
   btnPause: document.querySelector("#btn-pause"),
   btnSettings: document.querySelector("#btn-settings"),
+  btnReset: document.querySelector("#btn-reset"),
 };
 
 const tetris = new TetrisApp(
@@ -52,6 +53,30 @@ const tetris = new TetrisApp(
   page.timeDisplay
 );
 
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp") {
+    tetris.arrowUp();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowRight") {
+    tetris.arrowRight();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") {
+    tetris.arrowLeft();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown") {
+    tetris.arrowDown();
+  }
+});
+
 page.btnNewGame.addEventListener("click", () => {
   // если игра запущена нажатие на кнопку не сработает
   if (!tetris.gameOver) {
@@ -59,28 +84,22 @@ page.btnNewGame.addEventListener("click", () => {
   }
 
   tetris.init();
+});
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowUp") {
-      tetris.arrowUp();
-    }
-  });
+page.btnPause.addEventListener("click", () => {
+  // если игра не запущена кнопка не сработает
+  if (tetris.gameOver) {
+    return;
+  }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") {
-      tetris.arrowRight();
-    }
-  });
+  tetris.pause();
+});
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") {
-      tetris.arrowLeft();
-    }
-  });
+page.btnReset.addEventListener("click", () => {
+  // если игра не запущена кнопка не сработает
+  if (tetris.gameOver) {
+    return;
+  }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowDown") {
-      tetris.arrowDown();
-    }
-  });
+  tetris.reset();
 });

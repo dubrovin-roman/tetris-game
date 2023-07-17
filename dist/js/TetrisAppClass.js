@@ -44,9 +44,12 @@ class TetrisApp {
   level = 0;
   score = 0;
   lines = 0;
+  time = 0;
   gameOver = true;
   nextBrick;
   intervalSpeedId;
+  intervalTimeId;
+  isPause = false;
 
   constructor(
     playingFieldCells,
@@ -377,9 +380,10 @@ class TetrisApp {
   // отрисовка фигуры в поле nextBrick
   _renderingNexBrick() {
     //очищаем поле
-    this.nextBrickFieldCells.forEach((elem) =>
-      elem.classList.remove("active-cell")
-    );
+    this._clearNextBrickField();
+
+    // если фигура undefined ни чего не делаем
+    if (!this.nextBrick) return;
     //отрисовываем фигуру
     for (let row = 0; row < this.nextBrick.matrix.length; row++) {
       for (let col = 0; col < this.nextBrick.matrix[row].length; col++) {
@@ -395,6 +399,20 @@ class TetrisApp {
     }
   }
 
+  // очистить поле следующей фигуры
+  _clearNextBrickField() {
+    this.nextBrickFieldCells.forEach((elem) =>
+      elem.classList.remove("active-cell")
+    );
+  }
+
+  // очистить поле игры
+  _clearGameField() {
+    this.playingFieldCells.forEach((elem) =>
+      elem.classList.remove("active-cell")
+    );
+  }
+
   // отрисовка уровня, общего счета, соженных линий
   _renderingLevelScoreLines() {
     this.levelDisplay.innerText = `${this.level}`;
@@ -404,20 +422,23 @@ class TetrisApp {
 
   // отображения времени игры
   _showTimeOfGame() {
-    let time = 0;
+    if (this.intervalTimeId) {
+      clearInterval(this.intervalTimeId);
+    }
     let timeDisp;
-    const intervalTimeId = setInterval(() => {
-      if (time < 60) {
-        timeDisp = `${time} sec`;
+    this.intervalTimeId = setInterval(() => {
+      if (this.time < 60) {
+        timeDisp = `${this.time} sec`;
       } else {
-        timeDisp = `${Math.trunc(time / 60)} min ${time % 60} sec`;
+        timeDisp = `${Math.trunc(this.time / 60)} min ${this.time % 60} sec`;
       }
       this.timeDisplay.innerText = `${timeDisp}`;
-      time++;
+      this.time++;
       if (this.gameOver) clearInterval(intervalTimeId);
     }, 1000);
   }
 
+  // получение скорости (миллисекунды) в соответствии с уровнем
   _getSpeed() {
     if (this.level === 0) return 1000;
     let tempSpeed = 1000 - 30 * this.level;
@@ -426,15 +447,18 @@ class TetrisApp {
     return tempSpeed;
   }
 
+  // устоновление уровня в соответствии с колличеством набранных очков
   _setLevel() {
     if (this.level <= 5) {
       this.level = Math.trunc(this.score / 500);
     } else {
       let tempLevel = this.level - 5;
-      this.level = this.level + Math.trunc((this.score - 2500 - (tempLevel * 1000)) / 1000);
+      this.level =
+        this.level + Math.trunc((this.score - 2500 - tempLevel * 1000) / 1000);
     }
   }
 
+  // установка скорости отображения элементов
   _setIntervalSpeed() {
     if (this.intervalSpeedId) {
       clearInterval(this.intervalSpeedId);
@@ -447,6 +471,46 @@ class TetrisApp {
         clearInterval(this.intervalSpeedId);
       }
     }, this._getSpeed());
+  }
+
+  // пауза в игре
+  pause() {
+    if (!this.isPause) {
+      clearInterval(this.intervalSpeedId);
+      clearInterval(this.intervalTimeId);
+      this.isPause = true;
+    } else {
+      this._setIntervalSpeed();
+      this._showTimeOfGame();
+      this.isPause = false;
+    }
+  }
+
+  reset() {
+    if (this.intervalSpeedId) clearInterval(this.intervalSpeedId);
+    if (this.intervalTimeId) clearInterval(this.intervalTimeId);
+    this.level = 0;
+    this.score = 0;
+    this.lines = 0;
+    this.time = 0;
+    this.gameOver = true;
+    this.isPause = false;
+    this.tetrominoSequence = [];
+    this.nextBrick = undefined;
+    this.playField = [];
+    // заполняем массив нулями
+    for (let row = -2; row < 20; row++) {
+      this.playField[row] = [];
+
+      for (let col = 0; col < 10; col++) {
+        this.playField[row][col] = 0;
+      }
+    }
+    this.tetromino = this._getNextTetromino();
+    this._clearGameField();
+    this._clearNextBrickField();
+    this._renderingLevelScoreLines();
+    this.timeDisplay.innerText = `${this.time}`;
   }
 
   init() {
