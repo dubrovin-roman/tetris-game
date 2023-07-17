@@ -46,6 +46,7 @@ class TetrisApp {
   lines = 0;
   gameOver = true;
   nextBrick;
+  intervalSpeedId;
 
   constructor(
     playingFieldCells,
@@ -258,6 +259,10 @@ class TetrisApp {
     if (tempLines) {
       this.lines += tempLines;
       this.score += this._getPoints(this.level, tempLines);
+      // устанавливаем новый уровень
+      this._setLevel();
+      // устанавливаем новую скорость
+      this._setIntervalSpeed();
     }
 
     // отрисовываем level score lines
@@ -400,11 +405,48 @@ class TetrisApp {
   // отображения времени игры
   _showTimeOfGame() {
     let time = 0;
+    let timeDisp;
     const intervalTimeId = setInterval(() => {
-      this.timeDisplay.innerText = `${time}`;
+      if (time < 60) {
+        timeDisp = `${time} sec`;
+      } else {
+        timeDisp = `${Math.trunc(time / 60)} min ${time % 60} sec`;
+      }
+      this.timeDisplay.innerText = `${timeDisp}`;
       time++;
       if (this.gameOver) clearInterval(intervalTimeId);
     }, 1000);
+  }
+
+  _getSpeed() {
+    if (this.level === 0) return 1000;
+    let tempSpeed = 1000 - 30 * this.level;
+    console.log(tempSpeed);
+    if (tempSpeed < 100) return 100;
+    return tempSpeed;
+  }
+
+  _setLevel() {
+    if (this.level <= 5) {
+      this.level = Math.trunc(this.score / 500);
+    } else {
+      let tempLevel = this.level - 5;
+      this.level = this.level + Math.trunc((this.score - 2500 - (tempLevel * 1000)) / 1000);
+    }
+  }
+
+  _setIntervalSpeed() {
+    if (this.intervalSpeedId) {
+      clearInterval(this.intervalSpeedId);
+    }
+    this.intervalSpeedId = setInterval(() => {
+      this._renderingPlayingField();
+      this._conditionalMovementTetromino();
+      this._renderingTetromino();
+      if (this.gameOver) {
+        clearInterval(this.intervalSpeedId);
+      }
+    }, this._getSpeed());
   }
 
   init() {
@@ -414,14 +456,7 @@ class TetrisApp {
     this._renderingPlayingField();
     this._renderingTetromino();
     this._renderingNexBrick();
-    const intervalId = setInterval(() => {
-      this._renderingPlayingField();
-      this._conditionalMovementTetromino();
-      this._renderingTetromino();
-      if (this.gameOver) {
-        clearInterval(intervalId);
-      }
-    }, 500);
+    this._setIntervalSpeed();
   }
 }
 
