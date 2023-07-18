@@ -50,6 +50,7 @@ class TetrisApp {
   intervalSpeedId;
   intervalTimeId;
   isPause = false;
+  isReset = false;
 
   constructor(
     playingFieldCells,
@@ -57,7 +58,10 @@ class TetrisApp {
     levelDisplay,
     scoreDisplay,
     linesDisplay,
-    timeDisplay
+    timeDisplay,
+    modal,
+    overlay,
+    scoreDisplayModal
   ) {
     // заполняем сразу массив пустыми ячейками
     for (let row = -2; row < 20; row++) {
@@ -73,6 +77,9 @@ class TetrisApp {
     this.linesDisplay = linesDisplay;
     this.levelDisplay = levelDisplay;
     this.timeDisplay = timeDisplay;
+    this.modal = modal;
+    this.overlay = overlay;
+    this.scoreDisplayModal = scoreDisplayModal;
     this.tetromino = this._getNextTetromino();
   }
 
@@ -275,6 +282,18 @@ class TetrisApp {
   // показываем надпись Game Over
   _showGameOver() {
     this.gameOver = true;
+    this.isReset = true;
+    this.scoreDisplayModal.innerText = `${this.score}`;
+    this.modal.classList.remove("hidden");
+    this.overlay.classList.remove("hidden");
+    // останавливаем время
+    clearInterval(this.intervalTimeId);
+  }
+
+  // скрываем модальное окно
+  hideModal() {
+    this.modal.classList.add("hidden");
+    this.overlay.classList.add("hidden");
   }
 
   // стрелка вверх — поворот
@@ -495,6 +514,7 @@ class TetrisApp {
     this.time = 0;
     this.gameOver = true;
     this.isPause = false;
+    this.isReset = false;
     this.tetrominoSequence = [];
     this.nextBrick = undefined;
     this.playField = [];
@@ -514,6 +534,7 @@ class TetrisApp {
   }
 
   init() {
+    if (this.isReset) this.reset();
     this.gameOver = false;
     this._renderingLevelScoreLines();
     this._showTimeOfGame();
