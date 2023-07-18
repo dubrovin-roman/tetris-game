@@ -79,6 +79,9 @@ const tetris = new TetrisApp(
 
 // действие при нажатии на клавиатуре кнопки вверх
 document.addEventListener("keydown", (e) => {
+  // если пауза клавиша не работает
+  if (tetris.isPause) return;
+
   if (e.key === "ArrowUp") {
     tetris.arrowUp();
   }
@@ -86,6 +89,9 @@ document.addEventListener("keydown", (e) => {
 
 // действие при нажатии на клавиатуре кнопки вправо
 document.addEventListener("keydown", (e) => {
+  // если пауза клавиша не работает
+  if (tetris.isPause) return;
+
   if (e.key === "ArrowRight") {
     tetris.arrowRight();
   }
@@ -93,6 +99,9 @@ document.addEventListener("keydown", (e) => {
 
 // действие при нажатии на клавиатуре кнопки влево
 document.addEventListener("keydown", (e) => {
+  // если пауза клавиша не работает
+  if (tetris.isPause) return;
+
   if (e.key === "ArrowLeft") {
     tetris.arrowLeft();
   }
@@ -100,6 +109,9 @@ document.addEventListener("keydown", (e) => {
 
 // действие при нажатии на клавиатуре кнопки вниз
 document.addEventListener("keydown", (e) => {
+  // если пауза клавиша не работает
+  if (tetris.isPause) return;
+  
   if (e.key === "ArrowDown") {
     tetris.arrowDown();
   }
