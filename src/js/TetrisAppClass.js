@@ -461,7 +461,6 @@ class TetrisApp {
   _getSpeed() {
     if (this.level === 0) return 1000;
     let tempSpeed = 1000 - 30 * this.level;
-    console.log(tempSpeed);
     if (tempSpeed < 100) return 100;
     return tempSpeed;
   }

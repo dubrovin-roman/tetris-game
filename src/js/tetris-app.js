@@ -30,6 +30,18 @@ function createNextBrickField(nextBrickField) {
 const nbf = document.querySelector(".playing-content__next-brick");
 createNextBrickField(nbf);
 
+// подгружаем аудио файл главной темы Тетрис
+const mainTheme = new Audio("../sound/soundtrack-tetris.mp3");
+// зацикливаем аудио файл главной темы Тетрис
+mainTheme.addEventListener(
+  "ended",
+  function () {
+    this.currentTime = 0;
+    this.play();
+  },
+  false
+);
+
 // элементы на странице
 const page = {
   playingFieldCells: document.querySelectorAll(".playing-field__cell"),
@@ -111,7 +123,7 @@ document.addEventListener("keydown", (e) => {
 document.addEventListener("keydown", (e) => {
   // если пауза клавиша не работает
   if (tetris.isPause) return;
-  
+
   if (e.key === "ArrowDown") {
     tetris.arrowDown();
   }
@@ -125,6 +137,7 @@ page.btnNewGame.addEventListener("click", () => {
   }
 
   tetris.init();
+  mainTheme.play();
 });
 
 // кнопка новой игры в модальном окне
