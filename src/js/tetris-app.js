@@ -50,6 +50,7 @@ const page = {
   linesDisplay: document.querySelector("#lines-display"),
   timeDisplay: document.querySelector("#time-display"),
   nextBrickFieldCells: document.querySelectorAll(".next-brick-field__cell"),
+  btnBox: document.querySelector(".playing-content__btn-box"),
   btnNewGame: document.querySelector("#btn-new-game"),
   btnPause: document.querySelector("#btn-pause"),
   btnSettings: document.querySelector("#btn-settings"),
@@ -71,7 +72,7 @@ page.btnCloseModal.addEventListener("click", closeModal);
 page.overlay.addEventListener("click", closeModal);
 
 document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+  if (e.key === "Escape" && !page.modal.classList.contains("hidden")) {
     closeModal();
   }
 });
@@ -89,55 +90,26 @@ const tetris = new TetrisApp(
   page.scoreDisplayModal
 );
 
-// действие при нажатии на клавиатуре кнопки вверх
+// действие при нажатии на клавиатуре
 document.addEventListener("keydown", (e) => {
   // если пауза клавиша не работает
   if (tetris.isPause) return;
-
-  if (e.key === "ArrowUp") {
-    tetris.arrowUp();
-  }
-});
-
-// действие при нажатии на клавиатуре кнопки вправо
-document.addEventListener("keydown", (e) => {
-  // если пауза клавиша не работает
-  if (tetris.isPause) return;
-
+  // кнопки вправо
   if (e.key === "ArrowRight") {
     tetris.arrowRight();
   }
-});
-
-// действие при нажатии на клавиатуре кнопки влево
-document.addEventListener("keydown", (e) => {
-  // если пауза клавиша не работает
-  if (tetris.isPause) return;
-
+  // кнопки влево
   if (e.key === "ArrowLeft") {
     tetris.arrowLeft();
   }
-});
-
-// действие при нажатии на клавиатуре кнопки вниз
-document.addEventListener("keydown", (e) => {
-  // если пауза клавиша не работает
-  if (tetris.isPause) return;
-
+  // кнопки вниз
   if (e.key === "ArrowDown") {
     tetris.arrowDown();
   }
-});
-
-// кнопка новой игры
-page.btnNewGame.addEventListener("click", () => {
-  // если игра запущена нажатие на кнопку не сработает
-  if (!tetris.gameOver) {
-    return;
+  // кнопки вверх
+  if (e.key === "ArrowUp") {
+    tetris.arrowUp();
   }
-
-  tetris.init();
-  mainTheme.play();
 });
 
 // кнопка новой игры в модальном окне
@@ -151,17 +123,28 @@ page.btnNewGameModal.addEventListener("click", () => {
   tetris.init();
 });
 
-// кнопка паузы
-page.btnPause.addEventListener("click", () => {
-  // если игра не запущена кнопка не сработает
-  if (tetris.gameOver) {
-    return;
+// кнопки главного меню
+page.btnBox.addEventListener("click", (ev) => {
+  ev.preventDefault();
+
+  if (ev.target.classList.contains("btn-main-menu")) {
+    // кнопка сброса
+    if (ev.target.id == "btn-reset") tetris.reset();
+    // кнопка паузы
+    if (ev.target.id == "btn-pause") {
+      // если игра не запущена кнопка не сработает
+      if (tetris.gameOver) return;
+
+      tetris.pause();
+      if (mainTheme.paused) mainTheme.play();
+      else mainTheme.pause();
+    }
+    // кнопка новой игры
+    if (ev.target.id == "btn-new-game") {
+      if (!tetris.gameOver) return;
+
+      tetris.init();
+      mainTheme.play();
+    }
   }
-
-  tetris.pause();
-});
-
-// кнопка сброса
-page.btnReset.addEventListener("click", () => {
-  tetris.reset();
 });
