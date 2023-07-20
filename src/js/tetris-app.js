@@ -50,11 +50,11 @@ const page = {
   scoreDisplay: document.querySelector("#score-display"),
   linesDisplay: document.querySelector("#lines-display"),
   timeDisplay: document.querySelector("#time-display"),
+  speedDisplay: document.querySelector("#speed-display"),
   nextBrickFieldCells: document.querySelectorAll(".next-brick-field__cell"),
   btnBox: document.querySelector(".playing-content__btn-box"),
   btnNewGame: document.querySelector("#btn-new-game"),
   btnPause: document.querySelector("#btn-pause"),
-  btnSettings: document.querySelector("#btn-settings"),
   btnReset: document.querySelector("#btn-reset"),
   modal: document.querySelector(".modal"),
   overlay: document.querySelector(".overlay"),
@@ -92,7 +92,8 @@ const tetris = new TetrisApp(
   page.timeDisplay,
   page.modal,
   page.overlay,
-  page.scoreDisplayModal
+  page.scoreDisplayModal,
+  page.speedDisplay
 );
 
 // действие при нажатии на клавиатуре

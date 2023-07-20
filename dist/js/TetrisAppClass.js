@@ -45,12 +45,14 @@ class TetrisApp {
   score = 0;
   lines = 0;
   time = 0;
+  speed = 0;
   gameOver = true;
   nextBrick;
   intervalSpeedId;
   intervalTimeId;
   isPause = false;
   isReset = false;
+  isSpeedFrozen = false;
 
   constructor(
     playingFieldCells,
@@ -61,7 +63,8 @@ class TetrisApp {
     timeDisplay,
     modal,
     overlay,
-    scoreDisplayModal
+    scoreDisplayModal,
+    speedDisplay
   ) {
     // заполняем сразу массив пустыми ячейками
     for (let row = -2; row < 20; row++) {
@@ -77,6 +80,7 @@ class TetrisApp {
     this.linesDisplay = linesDisplay;
     this.levelDisplay = levelDisplay;
     this.timeDisplay = timeDisplay;
+    this.speedDisplay = speedDisplay;
     this.modal = modal;
     this.overlay = overlay;
     this.scoreDisplayModal = scoreDisplayModal;
@@ -266,7 +270,7 @@ class TetrisApp {
     this._renderingNexBrick();
 
     // добавляем соженные линии и набранные очки за ход к общим
-    if (tempLines) {
+    if (tempLines != 0) {
       this.lines += tempLines;
       this.score += this._getPoints(this.level, tempLines);
       // устанавливаем новый уровень
@@ -437,6 +441,11 @@ class TetrisApp {
     this.levelDisplay.innerText = `${this.level}`;
     this.scoreDisplay.innerText = `${this.score}`;
     this.linesDisplay.innerText = `${this.lines}`;
+    this._renderingSpeed();
+  }
+  // отрисовка скорости
+  _renderingSpeed() {
+    this.speedDisplay.innerText = `${this.speed}`;
   }
 
   // отображения времени игры
@@ -461,6 +470,7 @@ class TetrisApp {
   _getSpeed() {
     if (this.level === 0) return 1000;
     let tempSpeed = 1000 - 30 * this.level;
+    if (this.isSpeedFrozen) return this.speed;
     if (tempSpeed < 100) return 100;
     return tempSpeed;
   }
@@ -469,10 +479,14 @@ class TetrisApp {
   _setLevel() {
     if (this.level <= 5) {
       this.level = Math.trunc(this.score / 500);
-    } else {
+    } else if (this.level > 5 && this.level <= 15) {
       let tempLevel = this.level - 5;
       this.level =
         this.level + Math.trunc((this.score - 2500 - tempLevel * 1000) / 1000);
+    } else {
+      let tempLevel = this.level - 15;
+      this.level =
+        this.level + Math.trunc((this.score - 12500 - tempLevel * 2000) / 2000);
     }
   }
 
@@ -485,6 +499,8 @@ class TetrisApp {
       this._renderingPlayingField();
       this._conditionalMovementTetromino();
       this._renderingTetromino();
+      this.speed = this._getSpeed();
+      this._renderingSpeed();
       if (this.gameOver) {
         clearInterval(this.intervalSpeedId);
       }
@@ -511,9 +527,11 @@ class TetrisApp {
     this.score = 0;
     this.lines = 0;
     this.time = 0;
+    this.speed = 0;
     this.gameOver = true;
     this.isPause = false;
     this.isReset = false;
+    this.isSpeedFrozen = false;
     this.tetrominoSequence = [];
     this.nextBrick = undefined;
     this.playField = [];
