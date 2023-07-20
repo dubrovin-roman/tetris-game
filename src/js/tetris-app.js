@@ -32,6 +32,7 @@ createNextBrickField(nbf);
 
 // подгружаем аудио файл главной темы Тетрис
 const mainTheme = new Audio("../sound/soundtrack-tetris.mp3");
+
 // зацикливаем аудио файл главной темы Тетрис
 mainTheme.addEventListener(
   "ended",
@@ -60,7 +61,9 @@ const page = {
   btnCloseModal: document.querySelector(".btn--close-modal"),
   scoreDisplayModal: document.querySelector("#score-display-modal"),
   btnNewGameModal: document.querySelector("#btn-new-game-modal"),
+  toggleMusic: document.querySelector(".toggle-music"),
 };
+console.dir(page.toggleMusic);
 
 // закрытие модального окна
 const closeModal = function () {
@@ -123,25 +126,52 @@ page.btnNewGameModal.addEventListener("click", () => {
   tetris.init();
 });
 
+// функция для переключателя музыки
+function togglePlay() {
+  if (mainTheme.paused) mainTheme.play();
+  else mainTheme.pause();
+}
+
+// переключатель музыка
+page.toggleMusic.addEventListener("change", function () {
+  togglePlay();
+});
+
 // кнопки главного меню
 page.btnBox.addEventListener("click", (ev) => {
   ev.preventDefault();
 
   if (ev.target.classList.contains("btn-main-menu")) {
     // кнопка сброса
-    if (ev.target.id == "btn-reset") tetris.reset();
+    if (ev.target.id == "btn-reset") {
+      if (!mainTheme.paused) mainTheme.pause();
+
+      page.toggleMusic.disabled = false;
+      page.toggleMusic.checked = true;
+      tetris.reset();
+    }
     // кнопка паузы
     if (ev.target.id == "btn-pause") {
       // если игра не запущена кнопка не сработает
       if (tetris.gameOver) return;
+      // переключение активности переключателя музыки при нажатии паузы
+      if (page.toggleMusic.disabled) page.toggleMusic.disabled = false;
+      else page.toggleMusic.disabled = true;
+
+      if (!mainTheme.paused) {
+        togglePlay();
+        if (page.toggleMusic.checked) page.toggleMusic.checked = false;
+        else page.toggleMusic.checked = true;
+      }
 
       tetris.pause();
-      if (mainTheme.paused) mainTheme.play();
-      else mainTheme.pause();
     }
     // кнопка новой игры
     if (ev.target.id == "btn-new-game") {
       if (!tetris.gameOver) return;
+
+      page.toggleMusic.disabled = false;
+      page.toggleMusic.checked = true;
 
       tetris.init();
       mainTheme.play();
