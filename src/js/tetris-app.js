@@ -61,11 +61,15 @@ const page = {
   btnCloseModal: document.querySelector(".btn--close-modal"),
   scoreDisplayModal: document.querySelector("#score-display-modal"),
   btnNewGameModal: document.querySelector("#btn-new-game-modal"),
-  toggleMusic: document.querySelector(".toggle-music"),
+  toggleMusic: document.querySelector("#toggle-music"),
+  toggleFreezeSpeed: document.querySelector("#toggle-freeze-speed"),
+  toggleColorMode: document.querySelector("#toggle-color-mode"),
 };
 
 // при загрузке страница переключатели не активны
 page.toggleMusic.disabled = true;
+page.toggleFreezeSpeed.disabled = true;
+page.toggleColorMode.disabled = true;
 
 // закрытие модального окна
 const closeModal = function () {
@@ -125,6 +129,9 @@ page.btnNewGameModal.addEventListener("click", () => {
     return;
   }
 
+  page.toggleFreezeSpeed.checked = false;
+  if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
+
   tetris.hideModal();
   tetris.init();
   // сбрасываем время песнина 0
@@ -142,6 +149,11 @@ page.toggleMusic.addEventListener("change", function () {
   togglePlay();
 });
 
+// переключатель заморозки скорости
+page.toggleFreezeSpeed.addEventListener("change", function () {
+  tetris.toggleFreezeSpeed();
+});
+
 // кнопки главного меню
 page.btnBox.addEventListener("click", (ev) => {
   ev.preventDefault();
@@ -152,7 +164,12 @@ page.btnBox.addEventListener("click", (ev) => {
       if (!mainTheme.paused) mainTheme.pause();
 
       page.toggleMusic.disabled = true;
+      page.toggleFreezeSpeed.disabled = true;
+
       page.toggleMusic.checked = true;
+      page.toggleFreezeSpeed.checked = false;
+      if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
+
       tetris.reset();
     }
     // кнопка паузы
@@ -176,7 +193,11 @@ page.btnBox.addEventListener("click", (ev) => {
       if (!tetris.gameOver) return;
 
       page.toggleMusic.disabled = false;
+      page.toggleFreezeSpeed.disabled = false;
+
       page.toggleMusic.checked = true;
+      page.toggleFreezeSpeed.checked = false;
+      if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
 
       tetris.init();
       // сбрасываем время песнина 0

@@ -507,6 +507,12 @@ class TetrisApp {
     }, this._getSpeed());
   }
 
+  toggleFreezeSpeed() {
+    this.isSpeedFrozen
+      ? (this.isSpeedFrozen = false)
+      : (this.isSpeedFrozen = true);
+  }
+
   // пауза в игре
   pause() {
     if (!this.isPause) {
