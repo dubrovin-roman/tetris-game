@@ -63,7 +63,9 @@ const page = {
   btnNewGameModal: document.querySelector("#btn-new-game-modal"),
   toggleMusic: document.querySelector(".toggle-music"),
 };
-console.dir(page.toggleMusic);
+
+// при загрузке страница переключатели не активны
+page.toggleMusic.disabled = true;
 
 // закрытие модального окна
 const closeModal = function () {
@@ -146,7 +148,7 @@ page.btnBox.addEventListener("click", (ev) => {
     if (ev.target.id == "btn-reset") {
       if (!mainTheme.paused) mainTheme.pause();
 
-      page.toggleMusic.disabled = false;
+      page.toggleMusic.disabled = true;
       page.toggleMusic.checked = true;
       tetris.reset();
     }
@@ -174,6 +176,7 @@ page.btnBox.addEventListener("click", (ev) => {
       page.toggleMusic.checked = true;
 
       tetris.init();
+      mainTheme.currentTime = 0;
       mainTheme.play();
     }
   }
