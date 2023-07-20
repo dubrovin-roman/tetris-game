@@ -126,6 +126,8 @@ page.btnNewGameModal.addEventListener("click", () => {
 
   tetris.hideModal();
   tetris.init();
+  // сбрасываем время песнина 0
+  mainTheme.currentTime = 0;
 });
 
 // функция для переключателя музыки
@@ -176,6 +178,7 @@ page.btnBox.addEventListener("click", (ev) => {
       page.toggleMusic.checked = true;
 
       tetris.init();
+      // сбрасываем время песнина 0
       mainTheme.currentTime = 0;
       mainTheme.play();
     }
