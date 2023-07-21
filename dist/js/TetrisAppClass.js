@@ -38,6 +38,16 @@ const tetrominos = {
   ],
 };
 
+const colors = {
+  I: "cyan",
+  O: "yellow",
+  T: "purple",
+  S: "green",
+  Z: "red",
+  J: "blue",
+  L: "orange",
+};
+
 class TetrisApp {
   playField = [];
   tetrominoSequence = [];
@@ -53,6 +63,7 @@ class TetrisApp {
   isPause = false;
   isReset = false;
   isSpeedFrozen = false;
+  isColorMod = false;
 
   constructor(
     playingFieldCells,
@@ -93,10 +104,15 @@ class TetrisApp {
         const tempElem = this.playingFieldCells.find(
           (elem) => elem.id == `pf-${row}-${col}`
         );
-        if (this.playField[row][col] == 1) {
-          tempElem.classList.add("active-cell");
+        if (this.playField[row][col] != 0) {
+          this.isColorMod
+            ? tempElem.classList.add(
+                `active-cell_${colors[`${this.playField[row][col]}`]}`
+              )
+            : tempElem.classList.add("active-cell");
         } else if (this.playField[row][col] == 0) {
-          tempElem.classList.remove("active-cell");
+          tempElem.removeAttribute("class");
+          tempElem.setAttribute("class", "playing-field__cell");
         }
       }
     }
@@ -238,9 +254,8 @@ class TetrisApp {
             return this._showGameOver();
           }
           // если всё в порядке, то записываем в массив игрового поля нашу фигуру
-          this.playField[this.tetromino.row + row][
-            this.tetromino.col + col
-          ] = 1;
+          this.playField[this.tetromino.row + row][this.tetromino.col + col] =
+            this.tetromino.name;
           this._renderingPlayingField();
         }
       }
@@ -393,7 +408,11 @@ class TetrisApp {
                 elem.id ==
                 `pf-${this.tetromino.row + row}-${this.tetromino.col + col}`
             );
-            tempElem.classList.add("active-cell");
+            this.isColorMod
+              ? tempElem.classList.add(
+                  `active-cell_${colors[this.tetromino.name]}`
+                )
+              : tempElem.classList.add("active-cell");
           }
         }
       }
@@ -416,7 +435,11 @@ class TetrisApp {
               elem.id ==
               `nbf-${this.nextBrick.row + row}-${this.nextBrick.col + col}`
           );
-          tempElem.classList.add("active-cell");
+          this.isColorMod
+            ? tempElem.classList.add(
+                `active-cell_${colors[this.nextBrick.name]}`
+              )
+            : tempElem.classList.add("active-cell");
         }
       }
     }
@@ -424,16 +447,18 @@ class TetrisApp {
 
   // очистить поле следующей фигуры
   _clearNextBrickField() {
-    this.nextBrickFieldCells.forEach((elem) =>
-      elem.classList.remove("active-cell")
-    );
+    this.nextBrickFieldCells.forEach((elem) => {
+      elem.removeAttribute("class");
+      elem.setAttribute("class", "next-brick-field__cell");
+    });
   }
 
   // очистить поле игры
   _clearGameField() {
-    this.playingFieldCells.forEach((elem) =>
-      elem.classList.remove("active-cell")
-    );
+    this.playingFieldCells.forEach((elem) => {
+      elem.removeAttribute("class");
+      elem.setAttribute("class", "playing-field__cell");
+    });
   }
 
   // отрисовка уровня, общего счета, соженных линий
@@ -524,10 +549,30 @@ class TetrisApp {
     }, this._getSpeed());
   }
 
+  // переключение заморозки скорости
   toggleFreezeSpeed() {
     this.isSpeedFrozen
       ? (this.isSpeedFrozen = false)
       : (this.isSpeedFrozen = true);
+  }
+
+  // переключение color mode
+  toggleColorMode() {
+    if (this.isColorMod) {
+      this.isColorMod = false;
+      this._clearGameField();
+      this._clearNextBrickField();
+      this._renderingTetromino();
+      this._renderingPlayingField();
+      this._renderingNexBrick();
+    } else {
+      this.isColorMod = true;
+      this._clearGameField();
+      this._clearNextBrickField();
+      this._renderingTetromino();
+      this._renderingPlayingField();
+      this._renderingNexBrick();
+    }
   }
 
   // пауза в игре
@@ -555,6 +600,7 @@ class TetrisApp {
     this.isPause = false;
     this.isReset = false;
     this.isSpeedFrozen = false;
+    this.isColorMod = false;
     this.tetrominoSequence = [];
     this.nextBrick = undefined;
     this.playField = [];

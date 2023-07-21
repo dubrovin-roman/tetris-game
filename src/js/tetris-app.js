@@ -174,6 +174,11 @@ page.toggleFreezeSpeed.addEventListener("change", function () {
   toggleSpeedBtns(page.toggleFreezeSpeed.checked);
 });
 
+// переключатель color mode
+page.toggleColorMode.addEventListener("change", function () {
+  tetris.toggleColorMode();
+});
+
 // кнопки изменения скорости
 page.btnsSpeedBox.addEventListener("click", (ev) => {
   ev.preventDefault();
@@ -200,10 +205,13 @@ page.btnBox.addEventListener("click", (ev) => {
 
       page.toggleMusic.disabled = true;
       page.toggleFreezeSpeed.disabled = true;
+      page.toggleColorMode.disabled = true;
 
       page.toggleMusic.checked = true;
       page.toggleFreezeSpeed.checked = false;
+      page.toggleColorMode.checked = false;
       if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
+      if (tetris.isColorMod) tetris.toggleColorMode();
 
       tetris.reset();
     }
@@ -229,10 +237,13 @@ page.btnBox.addEventListener("click", (ev) => {
 
       page.toggleMusic.disabled = false;
       page.toggleFreezeSpeed.disabled = false;
+      page.toggleColorMode.disabled = false;
 
       page.toggleMusic.checked = true;
       page.toggleFreezeSpeed.checked = false;
+      page.toggleColorMode.checked = false;
       if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
+      if (tetris.isColorMod) tetris.toggleColorMode();
 
       tetris.init();
       // сбрасываем время песнина 0
