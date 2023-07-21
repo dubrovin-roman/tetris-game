@@ -468,11 +468,28 @@ class TetrisApp {
 
   // получение скорости (миллисекунды) в соответствии с уровнем
   _getSpeed() {
+    if (this.isSpeedFrozen) return this.speed;
     if (this.level === 0) return 1000;
     let tempSpeed = 1000 - 30 * this.level;
-    if (this.isSpeedFrozen) return this.speed;
     if (tempSpeed < 100) return 100;
     return tempSpeed;
+  }
+
+  // увеличение скорости вручную
+  speedUp() {
+    if (!this.isSpeedFrozen) return;
+    this.speed += 30;
+    this._renderingSpeed();
+    if (!this.isPause) this._setIntervalSpeed();
+  }
+
+  // уменьшение скорости вручную
+  speedDown() {
+    if (!this.isSpeedFrozen) return;
+    if (this.speed <= 50) return;
+    this.speed -= 30;
+    this._renderingSpeed();
+    if (!this.isPause) this._setIntervalSpeed();
   }
 
   // устоновление уровня в соответствии с колличеством набранных очков

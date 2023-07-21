@@ -64,12 +64,15 @@ const page = {
   toggleMusic: document.querySelector("#toggle-music"),
   toggleFreezeSpeed: document.querySelector("#toggle-freeze-speed"),
   toggleColorMode: document.querySelector("#toggle-color-mode"),
+  btnsSpeedBox: document.querySelector(".playing-content__btns-speed-box"),
 };
 
 // при загрузке страница переключатели не активны
 page.toggleMusic.disabled = true;
 page.toggleFreezeSpeed.disabled = true;
 page.toggleColorMode.disabled = true;
+// скрываем кнопки изменения скорости
+page.btnsSpeedBox.classList.add("btns-speed_hidden");
 
 // закрытие модального окна
 const closeModal = function () {
@@ -132,6 +135,9 @@ page.btnNewGameModal.addEventListener("click", () => {
   page.toggleFreezeSpeed.checked = false;
   if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
 
+  // скрываем кнопки изменения скорости
+  page.btnsSpeedBox.classList.add("btns-speed_hidden");
+
   tetris.hideModal();
   tetris.init();
   // сбрасываем время песнина 0
@@ -144,6 +150,19 @@ function togglePlay() {
   else mainTheme.pause();
 }
 
+// функция скрытия и показа кнопок изменения скорости
+function toggleSpeedBtns(checked) {
+  if (checked) {
+    page.btnsSpeedBox.classList.remove(
+      "btns-speed_animationLeftToRight",
+      "btns-speed_hidden"
+    );
+  } else {
+    page.btnsSpeedBox.classList.add("btns-speed_animationLeftToRight");
+    setTimeout(() => page.btnsSpeedBox.classList.add("btns-speed_hidden"), 900);
+  }
+}
+
 // переключатель музыка
 page.toggleMusic.addEventListener("change", function () {
   togglePlay();
@@ -152,6 +171,22 @@ page.toggleMusic.addEventListener("change", function () {
 // переключатель заморозки скорости
 page.toggleFreezeSpeed.addEventListener("change", function () {
   tetris.toggleFreezeSpeed();
+  toggleSpeedBtns(page.toggleFreezeSpeed.checked);
+});
+
+// кнопки изменения скорости
+page.btnsSpeedBox.addEventListener("click", (ev) => {
+  ev.preventDefault();
+
+  // кнопка минус
+  if (ev.target.closest("#btn-minus-speed")) {
+    tetris.speedDown();
+  }
+
+  // кнопка плюс
+  if (ev.target.closest("#btn-plus-speed")) {
+    tetris.speedUp();
+  }
 });
 
 // кнопки главного меню
