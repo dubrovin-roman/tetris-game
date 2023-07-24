@@ -75,7 +75,9 @@ class TetrisApp {
     modal,
     overlay,
     scoreDisplayModal,
-    speedDisplay
+    speedDisplay,
+    modalPause,
+    modaleDonate
   ) {
     // заполняем сразу массив пустыми ячейками
     for (let row = -2; row < 20; row++) {
@@ -93,6 +95,8 @@ class TetrisApp {
     this.timeDisplay = timeDisplay;
     this.speedDisplay = speedDisplay;
     this.modal = modal;
+    this.modalPause = modalPause;
+    this.modaleDonate = modaleDonate;
     this.overlay = overlay;
     this.scoreDisplayModal = scoreDisplayModal;
     this.tetromino = this._getNextTetromino();
@@ -585,6 +589,16 @@ class TetrisApp {
       this._showTimeOfGame();
       this.isPause = false;
     }
+  }
+
+  showPauseModal() {
+    this.modalPause.classList.remove("hidden");
+    this.overlay.classList.remove("hidden");
+  }
+
+  showDonateModal() {
+    this.modaleDonate.classList.remove("hidden");
+    this.overlay.classList.remove("hidden");
   }
 
   reset() {

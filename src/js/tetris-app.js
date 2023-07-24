@@ -56,9 +56,12 @@ const page = {
   btnNewGame: document.querySelector("#btn-new-game"),
   btnPause: document.querySelector("#btn-pause"),
   btnReset: document.querySelector("#btn-reset"),
-  modal: document.querySelector(".modal"),
+  btnDonate: document.querySelector("#btn-donate"),
+  modal: document.querySelector("#modal-game-over"),
+  modalPaused: document.querySelector("#modal-pause"),
+  modalDonate: document.querySelector("#modal-donate"),
   overlay: document.querySelector(".overlay"),
-  btnCloseModal: document.querySelector(".btn--close-modal"),
+  btnsCloseModal: document.querySelectorAll(".btn--close-modal"),
   scoreDisplayModal: document.querySelector("#score-display-modal"),
   btnNewGameModal: document.querySelector("#btn-new-game-modal"),
   toggleMusic: document.querySelector("#toggle-music"),
@@ -76,18 +79,26 @@ page.btnsSpeedBox.classList.add("btns-speed_hidden");
 
 // закрытие модального окна
 const closeModal = function () {
-  page.modal.classList.add("hidden");
+  if (!page.modal.classList.contains("hidden")) {
+    page.modal.classList.add("hidden");
+  }
+
+  if (!page.modalDonate.classList.contains("hidden")) {
+    page.modalDonate.classList.add("hidden");
+    if (tetris.isPause) tetris.pause();
+  }
+
+  if (!page.modalPaused.classList.contains("hidden")) {
+    page.modalPaused.classList.add("hidden");
+    if (tetris.isPause) tetris.pause();
+  }
   page.overlay.classList.add("hidden");
 };
 
-page.btnCloseModal.addEventListener("click", closeModal);
+page.btnsCloseModal.forEach((elem) =>
+  elem.addEventListener("click", closeModal)
+);
 page.overlay.addEventListener("click", closeModal);
-
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && !page.modal.classList.contains("hidden")) {
-    closeModal();
-  }
-});
 
 // создаем объект тетриса
 const tetris = new TetrisApp(
@@ -100,11 +111,18 @@ const tetris = new TetrisApp(
   page.modal,
   page.overlay,
   page.scoreDisplayModal,
-  page.speedDisplay
+  page.speedDisplay,
+  page.modalPaused,
+  page.modalDonate
 );
 
 // действие при нажатии на клавиатуре
 document.addEventListener("keydown", (e) => {
+  // кнопка escape привключенной паузе
+  if (e.key === "Escape") {
+    closeModal();
+  }
+
   // если пауза клавиша не работает
   if (tetris.isPause) return;
   // кнопки вправо
@@ -239,6 +257,7 @@ page.btnBox.addEventListener("click", (ev) => {
       }
 
       tetris.pause();
+      tetris.showPauseModal();
     }
     // кнопка новой игры
     if (ev.target.id == "btn-new-game") {
@@ -260,6 +279,14 @@ page.btnBox.addEventListener("click", (ev) => {
       // сбрасываем время песнина 0
       mainTheme.currentTime = 0;
       mainTheme.play();
+    }
+
+    // кнопка donate
+    if (ev.target.id == "btn-donate") {
+      if (!tetris.gameOver) {
+        if (!tetris.isPause) tetris.pause();
+      }
+      tetris.showDonateModal();
     }
   }
 });

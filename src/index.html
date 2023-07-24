@@ -64,14 +64,23 @@
             </div>
         </div>
     </div>
-    <div class="modal hidden">
+    <div id="modal-game-over" class="modal hidden">
         <button class="btn--close-modal">&times;</button>
-        <h2 class="modal__header">game over</h2>
+        <h2 class="modal__header margin-bottom-20px">game over</h2>
         <div class="modal__score-box">
             <p class="modal__statistics-score-title statistics-text">your score:</p>
             <p id="score-display-modal" class="modal__statistics-score-display statistics-text-display">0</p>
         </div>
         <button id="btn-new-game-modal" class="modal__btn btn-main-menu">new game</button>
+    </div>
+    <div id="modal-pause" class="modal hidden">
+        <button class="btn--close-modal">&times;</button>
+        <h2 class="modal__header">paused</h2>
+    </div>
+    <div id="modal-donate" class="modal hidden">
+        <button class="btn--close-modal">&times;</button>
+        <h2 class="modal__header margin-bottom-20px">donate</h2>
+        <h2 class="modal__text">SBER: 0000 0000 0000 0000</h2>
     </div>
     <div class="overlay hidden"></div>
 </body>
