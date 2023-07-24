@@ -134,6 +134,7 @@ class TetrisApp {
 
   _getPoints(level, lines) {
     let points = 0;
+    if (this.isSpeedFrozen) return points;
     if (lines >= 4) {
       if (level == 0) return 1200;
       points = 1200 * (level + 1);
@@ -400,9 +401,6 @@ class TetrisApp {
       for (let col = 0; col < this.tetromino.matrix[row].length; col++) {
         if (this.tetromino.matrix[row][col]) {
           if (this.tetromino.row + row >= 0 && this.tetromino.col + col >= 0) {
-            // console.log(
-            //   `pf-${this.tetromino.row + row}-${this.tetromino.col + col}`
-            // );
             const tempElem = this.playingFieldCells.find(
               (elem) =>
                 elem.id ==
@@ -554,6 +552,7 @@ class TetrisApp {
     this.isSpeedFrozen
       ? (this.isSpeedFrozen = false)
       : (this.isSpeedFrozen = true);
+    this._setIntervalSpeed();
   }
 
   // переключение color mode
@@ -562,15 +561,15 @@ class TetrisApp {
       this.isColorMod = false;
       this._clearGameField();
       this._clearNextBrickField();
-      this._renderingTetromino();
       this._renderingPlayingField();
+      this._renderingTetromino();
       this._renderingNexBrick();
     } else {
       this.isColorMod = true;
       this._clearGameField();
       this._clearNextBrickField();
-      this._renderingTetromino();
       this._renderingPlayingField();
+      this._renderingTetromino();
       this._renderingNexBrick();
     }
   }
@@ -600,7 +599,6 @@ class TetrisApp {
     this.isPause = false;
     this.isReset = false;
     this.isSpeedFrozen = false;
-    this.isColorMod = false;
     this.tetrominoSequence = [];
     this.nextBrick = undefined;
     this.playField = [];

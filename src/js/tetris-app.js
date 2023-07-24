@@ -163,6 +163,12 @@ function toggleSpeedBtns(checked) {
   }
 }
 
+// функция преключения color mode для игрового поля и поля следующей фигуры
+function toggleFieldsColorMode() {
+  playingField.classList.toggle("playing-field_color-mode");
+  nbf.classList.toggle("next-brick-field_color-mode");
+}
+
 // переключатель музыка
 page.toggleMusic.addEventListener("change", function () {
   togglePlay();
@@ -177,6 +183,7 @@ page.toggleFreezeSpeed.addEventListener("change", function () {
 // переключатель color mode
 page.toggleColorMode.addEventListener("change", function () {
   tetris.toggleColorMode();
+  toggleFieldsColorMode();
 });
 
 // кнопки изменения скорости
@@ -205,13 +212,15 @@ page.btnBox.addEventListener("click", (ev) => {
 
       page.toggleMusic.disabled = true;
       page.toggleFreezeSpeed.disabled = true;
-      page.toggleColorMode.disabled = true;
 
       page.toggleMusic.checked = true;
       page.toggleFreezeSpeed.checked = false;
-      page.toggleColorMode.checked = false;
+      tetris.isColorMod
+        ? (page.toggleColorMode.checked = true)
+        : (page.toggleColorMode.checked = false);
       if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
-      if (tetris.isColorMod) tetris.toggleColorMode();
+      toggleSpeedBtns(page.toggleFreezeSpeed.checked);
+      //if (tetris.isColorMod) tetris.toggleColorMode();
 
       tetris.reset();
     }
@@ -241,9 +250,11 @@ page.btnBox.addEventListener("click", (ev) => {
 
       page.toggleMusic.checked = true;
       page.toggleFreezeSpeed.checked = false;
-      page.toggleColorMode.checked = false;
+      tetris.isColorMod
+        ? (page.toggleColorMode.checked = true)
+        : (page.toggleColorMode.checked = false);
       if (tetris.isSpeedFrozen) tetris.toggleFreezeSpeed();
-      if (tetris.isColorMod) tetris.toggleColorMode();
+      //if (tetris.isColorMod) tetris.toggleColorMode();
 
       tetris.init();
       // сбрасываем время песнина 0
