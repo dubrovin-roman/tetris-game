@@ -77,6 +77,22 @@ page.toggleFreezeSpeed.disabled = true;
 // скрываем кнопки изменения скорости
 page.btnsSpeedBox.classList.add("btns-speed_hidden");
 
+// создаем объект тетриса
+const tetris = new TetrisApp(
+  page.playingFieldCells,
+  page.nextBrickFieldCells,
+  page.levelDisplay,
+  page.scoreDisplay,
+  page.linesDisplay,
+  page.timeDisplay,
+  page.modal,
+  page.overlay,
+  page.scoreDisplayModal,
+  page.speedDisplay,
+  page.modalPaused,
+  page.modalDonate
+);
+
 // закрытие модального окна
 const closeModal = function () {
   if (!page.modal.classList.contains("hidden")) {
@@ -99,22 +115,6 @@ page.btnsCloseModal.forEach((elem) =>
   elem.addEventListener("click", closeModal)
 );
 page.overlay.addEventListener("click", closeModal);
-
-// создаем объект тетриса
-const tetris = new TetrisApp(
-  page.playingFieldCells,
-  page.nextBrickFieldCells,
-  page.levelDisplay,
-  page.scoreDisplay,
-  page.linesDisplay,
-  page.timeDisplay,
-  page.modal,
-  page.overlay,
-  page.scoreDisplayModal,
-  page.speedDisplay,
-  page.modalPaused,
-  page.modalDonate
-);
 
 // действие при нажатии на клавиатуре
 document.addEventListener("keydown", (e) => {
@@ -246,9 +246,6 @@ page.btnBox.addEventListener("click", (ev) => {
     if (ev.target.id == "btn-pause") {
       // если игра не запущена кнопка не сработает
       if (tetris.gameOver) return;
-      // переключение активности переключателя музыки при нажатии паузы
-      if (page.toggleMusic.disabled) page.toggleMusic.disabled = false;
-      else page.toggleMusic.disabled = true;
 
       if (!mainTheme.paused) {
         togglePlay();
@@ -284,7 +281,14 @@ page.btnBox.addEventListener("click", (ev) => {
     // кнопка donate
     if (ev.target.id == "btn-donate") {
       if (!tetris.gameOver) {
-        if (!tetris.isPause) tetris.pause();
+        if (!tetris.isPause) {
+          if (!mainTheme.paused) {
+            togglePlay();
+            if (page.toggleMusic.checked) page.toggleMusic.checked = false;
+            else page.toggleMusic.checked = true;
+          }
+          tetris.pause();
+        }
       }
       tetris.showDonateModal();
     }
