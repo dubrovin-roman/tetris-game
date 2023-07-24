@@ -73,7 +73,7 @@ const page = {
 // при загрузке страница переключатели не активны
 page.toggleMusic.disabled = true;
 page.toggleFreezeSpeed.disabled = true;
-page.toggleColorMode.disabled = true;
+//page.toggleColorMode.disabled = true;
 // скрываем кнопки изменения скорости
 page.btnsSpeedBox.classList.add("btns-speed_hidden");
 
@@ -210,12 +210,12 @@ page.btnsSpeedBox.addEventListener("click", (ev) => {
 
   // кнопка минус
   if (ev.target.closest("#btn-minus-speed")) {
-    tetris.speedDown();
+    tetris.speedUp();
   }
 
   // кнопка плюс
   if (ev.target.closest("#btn-plus-speed")) {
-    tetris.speedUp();
+    tetris.speedDown();
   }
 });
 

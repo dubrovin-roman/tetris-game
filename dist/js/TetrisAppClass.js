@@ -55,7 +55,7 @@ class TetrisApp {
   score = 0;
   lines = 0;
   time = 0;
-  speed = 0;
+  speed = 1000;
   gameOver = true;
   nextBrick;
   intervalSpeedId;
@@ -472,7 +472,7 @@ class TetrisApp {
   }
   // отрисовка скорости
   _renderingSpeed() {
-    this.speedDisplay.innerText = `${this.speed}`;
+    this.speedDisplay.innerText = `${(this.speed - 1000) * -1}`;
   }
 
   // отображения времени игры
@@ -567,14 +567,14 @@ class TetrisApp {
       this._clearNextBrickField();
       this._renderingPlayingField();
       this._renderingTetromino();
-      this._renderingNexBrick();
+      if (!this.gameOver) this._renderingNexBrick();
     } else {
       this.isColorMod = true;
       this._clearGameField();
       this._clearNextBrickField();
       this._renderingPlayingField();
       this._renderingTetromino();
-      this._renderingNexBrick();
+      if (!this.gameOver) this._renderingNexBrick();
     }
   }
 
@@ -608,7 +608,7 @@ class TetrisApp {
     this.score = 0;
     this.lines = 0;
     this.time = 0;
-    this.speed = 0;
+    this.speed = 1000;
     this.gameOver = true;
     this.isPause = false;
     this.isReset = false;
