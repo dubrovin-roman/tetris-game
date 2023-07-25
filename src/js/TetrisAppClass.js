@@ -64,6 +64,7 @@ class TetrisApp {
   isReset = false;
   isSpeedFrozen = false;
   isColorMod = false;
+  isDblDownPress = false;
 
   constructor(
     playingFieldCells,
@@ -249,6 +250,8 @@ class TetrisApp {
 
   // когда фигура окончательна встала на своё место
   _placeTetromino() {
+    this.isDblDownPress = false;
+    
     let tempLines = 0;
     // обрабатываем все строки и столбцы в игровом поле
     for (let row = 0; row < this.tetromino.matrix.length; row++) {
@@ -613,6 +616,7 @@ class TetrisApp {
     this.isPause = false;
     this.isReset = false;
     this.isSpeedFrozen = false;
+    this.isDblDownPress = false;
     this.tetrominoSequence = [];
     this.nextBrick = undefined;
     this.playField = [];

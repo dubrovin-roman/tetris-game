@@ -72,6 +72,7 @@ const page = {
   btnRight: document.querySelector(".container__btn-right"),
   btnDown: document.querySelector(".container__btn-down"),
   btnRotate: document.querySelector(".container__btn-rotate"),
+  btnDoubleDown: document.querySelector(".container__double-down"),
 };
 
 // при загрузке страница переключатели не активны
@@ -96,6 +97,11 @@ const tetris = new TetrisApp(
   page.modalPaused,
   page.modalDonate
 );
+
+// отключил контекстное меню
+document.body.oncontextmenu = function (ev) {
+  return false;
+};
 
 // закрытие модального окна
 const closeModal = function () {
@@ -169,6 +175,16 @@ page.btnRight.addEventListener("click", (ev) => {
 page.btnDown.addEventListener("click", (ev) => {
   ev.preventDefault();
   tetris.arrowDown();
+});
+
+// действие при нажатии кнопки действия double down
+page.btnDoubleDown.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  tetris.isDblDownPress = true;
+  const tId = setInterval(() => {
+    if (!tetris.isDblDownPress) clearInterval(tId);
+    tetris.arrowDown();
+  }, 100);
 });
 
 // кнопка новой игры в модальном окне
