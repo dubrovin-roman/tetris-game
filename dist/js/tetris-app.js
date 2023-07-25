@@ -68,6 +68,9 @@ const page = {
   toggleFreezeSpeed: document.querySelector("#toggle-freeze-speed"),
   toggleColorMode: document.querySelector("#toggle-color-mode"),
   btnsSpeedBox: document.querySelector(".playing-content__btns-speed-box"),
+  btnLeft: document.querySelector(".container__btn-left"),
+  btnRight: document.querySelector(".container__btn-right"),
+  btnDown: document.querySelector(".container__btn-down"),
 };
 
 // при загрузке страница переключатели не активны
@@ -141,6 +144,26 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp") {
     tetris.arrowUp();
   }
+});
+
+// действие при нажатии на игровое поле
+playingField.addEventListener("click", () => {
+  tetris.arrowUp();
+});
+
+page.btnLeft.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  tetris.arrowLeft();
+});
+
+page.btnRight.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  tetris.arrowRight();
+});
+
+page.btnDown.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  tetris.arrowDown();
 });
 
 // кнопка новой игры в модальном окне
