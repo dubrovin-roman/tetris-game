@@ -71,6 +71,7 @@ const page = {
   btnLeft: document.querySelector(".container__btn-left"),
   btnRight: document.querySelector(".container__btn-right"),
   btnDown: document.querySelector(".container__btn-down"),
+  btnRotate: document.querySelector(".container__btn-rotate"),
 };
 
 // при загрузке страница переключатели не активны
@@ -146,21 +147,25 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// действие при нажатии на игровое поле
-playingField.addEventListener("click", () => {
+// действие при нажатии кнопки действия rotate
+page.btnRotate.addEventListener("click", (ev) => {
+  ev.preventDefault();
   tetris.arrowUp();
 });
 
+// действие при нажатии кнопки действия left
 page.btnLeft.addEventListener("click", (ev) => {
   ev.preventDefault();
   tetris.arrowLeft();
 });
 
+// действие при нажатии кнопки действия right
 page.btnRight.addEventListener("click", (ev) => {
   ev.preventDefault();
   tetris.arrowRight();
 });
 
+// действие при нажатии кнопки действия down
 page.btnDown.addEventListener("click", (ev) => {
   ev.preventDefault();
   tetris.arrowDown();
