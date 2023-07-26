@@ -219,6 +219,7 @@ page.btnFullScreen.addEventListener("click", (ev) => {
     page.containerFS.removeAttribute("style");
 
   page.body.classList.add("body-fs");
+  if (tetris.isColorMod) page.body.classList.add("body-fs_color-mode");
 });
 
 // действие при нажатии кнопки fullscreen exit
@@ -230,6 +231,7 @@ page.btnFullScreenExit.addEventListener("click", (ev) => {
     page.containerFS.setAttribute("style", "display: none");
 
   page.body.classList.remove("body-fs");
+  page.body.classList.remove("body-fs_color-mode");
 });
 
 // кнопка новой игры в модальном окне
@@ -273,6 +275,7 @@ function toggleSpeedBtns(checked) {
 // функция преключения color mode для игрового поля и поля следующей фигуры
 function toggleFieldsColorMode() {
   playingField.classList.toggle("playing-field_color-mode");
+  fieldFS.classList.toggle("playing-field-fs_color-mode");
   nbf.classList.toggle("next-brick-field_color-mode");
 }
 
