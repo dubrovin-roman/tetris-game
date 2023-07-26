@@ -63,6 +63,7 @@ const page = {
   container: document.querySelector(".container"),
   containerFS: document.querySelector(".container-fs"),
   playingFieldCells: document.querySelectorAll(".playing-field__cell"),
+  playingFieldFSCells: document.querySelectorAll(".playing-field-fs__cell"),
   levelDisplay: document.querySelector("#level-display"),
   scoreDisplay: document.querySelector("#score-display"),
   linesDisplay: document.querySelector("#lines-display"),
@@ -116,7 +117,8 @@ const tetris = new TetrisApp(
   page.scoreDisplayModal,
   page.speedDisplay,
   page.modalPaused,
-  page.modalDonate
+  page.modalDonate,
+  page.playingFieldFSCells
 );
 
 // отключил контекстное меню

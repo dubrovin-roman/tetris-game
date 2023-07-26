@@ -2,13 +2,44 @@
     display: grid
     grid-template-columns: repeat(10, 1fr)
     grid-template-rows: repeat(20, 1fr)
-    gap: 2vw
+    gap: 3vw
     justify-items: center
-    padding: 1vw 1vw
+    padding: 2vw 4.8vw
     &__cell
-        width: 7.2vw
-        height: 7.2vw
+        width: 6vw
+        height: 6vw
         background: #000
         opacity: .2
         outline: solid .1vw #000
-        outline-offset: .6vw
+        outline-offset: 1vw
+
+.active-cell-fs
+    opacity: 1
+    &_cyan
+        opacity: 1
+        background: cyan
+        outline: solid .1vw cyan
+    &_yellow
+        opacity: 1
+        background: yellow
+        outline: solid .1vw yellow
+    &_purple
+        opacity: 1
+        background: purple
+        outline: solid .1vw purple
+    &_green
+        opacity: 1
+        background: green
+        outline: solid .1vw green
+    &_red
+        opacity: 1
+        background: red
+        outline: solid .1vw red
+    &_blue
+        opacity: 1
+        background: blue
+        outline: solid .1vw blue
+    &_orange
+        opacity: 1
+        background: orange
+        outline: solid .1vw orange

@@ -78,7 +78,8 @@ class TetrisApp {
     scoreDisplayModal,
     speedDisplay,
     modalPause,
-    modaleDonate
+    modaleDonate,
+    playingFieldFSCells
   ) {
     // заполняем сразу массив пустыми ячейками
     for (let row = -2; row < 20; row++) {
@@ -90,6 +91,7 @@ class TetrisApp {
     }
     this.playingFieldCells = Array.from(playingFieldCells);
     this.nextBrickFieldCells = Array.from(nextBrickFieldCells);
+    this.playingFieldFSCells = Array.from(playingFieldFSCells);
     this.scoreDisplay = scoreDisplay;
     this.linesDisplay = linesDisplay;
     this.levelDisplay = levelDisplay;
@@ -109,15 +111,25 @@ class TetrisApp {
         const tempElem = this.playingFieldCells.find(
           (elem) => elem.id == `pf-${row}-${col}`
         );
+        const tempElemFS = this.playingFieldFSCells.find(
+          (elem) => elem.id == `pfFS-${row}-${col}`
+        );
         if (this.playField[row][col] != 0) {
           this.isColorMod
             ? tempElem.classList.add(
                 `active-cell_${colors[`${this.playField[row][col]}`]}`
               )
             : tempElem.classList.add("active-cell");
+          this.isColorMod
+            ? tempElemFS.classList.add(
+                `active-cell-fs_${colors[`${this.playField[row][col]}`]}`
+              )
+            : tempElemFS.classList.add("active-cell-fs");
         } else if (this.playField[row][col] == 0) {
           tempElem.removeAttribute("class");
           tempElem.setAttribute("class", "playing-field__cell");
+          tempElemFS.removeAttribute("class");
+          tempElemFS.setAttribute("class", "playing-field-fs__cell");
         }
       }
     }
@@ -251,7 +263,7 @@ class TetrisApp {
   // когда фигура окончательна встала на своё место
   _placeTetromino() {
     this.isDblDownPress = false;
-    
+
     let tempLines = 0;
     // обрабатываем все строки и столбцы в игровом поле
     for (let row = 0; row < this.tetromino.matrix.length; row++) {
@@ -413,11 +425,21 @@ class TetrisApp {
                 elem.id ==
                 `pf-${this.tetromino.row + row}-${this.tetromino.col + col}`
             );
+            const tempElemFS = this.playingFieldFSCells.find(
+              (elem) =>
+                elem.id ==
+                `pfFS-${this.tetromino.row + row}-${this.tetromino.col + col}`
+            );
             this.isColorMod
               ? tempElem.classList.add(
                   `active-cell_${colors[this.tetromino.name]}`
                 )
               : tempElem.classList.add("active-cell");
+            this.isColorMod
+              ? tempElemFS.classList.add(
+                  `active-cell-fs_${colors[this.tetromino.name]}`
+                )
+              : tempElemFS.classList.add("active-cell-fs");
           }
         }
       }
@@ -463,6 +485,10 @@ class TetrisApp {
     this.playingFieldCells.forEach((elem) => {
       elem.removeAttribute("class");
       elem.setAttribute("class", "playing-field__cell");
+    });
+    this.playingFieldFSCells.forEach((elem) => {
+      elem.removeAttribute("class");
+      elem.setAttribute("class", "playing-field-fs__cell");
     });
   }
 
