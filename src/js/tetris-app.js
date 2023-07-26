@@ -89,7 +89,7 @@ const page = {
   btnsLeft: document.querySelectorAll(".btn-left"),
   btnsRight: document.querySelectorAll(".btn-right"),
   btnsDown: document.querySelectorAll(".btn-down"),
-  btnRotate: document.querySelector(".container__btn-rotate"),
+  btnsRotate: document.querySelectorAll(".btn-rotate"),
   btnDoubleDown: document.querySelector(".container__double-down"),
   btnFullScreen: document.querySelector(".container__btn-full-screen"),
   btnFullScreenExit: document.querySelector(
@@ -177,9 +177,11 @@ document.addEventListener("keydown", (e) => {
 });
 
 // действие при нажатии кнопки действия rotate
-page.btnRotate.addEventListener("click", (ev) => {
-  ev.preventDefault();
-  tetris.arrowUp();
+page.btnsRotate.forEach((elem) => {
+  elem.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    tetris.arrowUp();
+  });
 });
 
 // действие при нажатии кнопок left
