@@ -87,7 +87,7 @@ const page = {
   toggleColorMode: document.querySelector("#toggle-color-mode"),
   btnsSpeedBox: document.querySelector(".playing-content__btns-speed-box"),
   btnsLeft: document.querySelectorAll(".btn-left"),
-  btnRight: document.querySelector(".container__btn-right"),
+  btnsRight: document.querySelectorAll(".btn-right"),
   btnDown: document.querySelector(".container__btn-down"),
   btnRotate: document.querySelector(".container__btn-rotate"),
   btnDoubleDown: document.querySelector(".container__double-down"),
@@ -190,10 +190,12 @@ page.btnsLeft.forEach((elem) => {
   });
 });
 
-// действие при нажатии кнопки действия right
-page.btnRight.addEventListener("click", (ev) => {
-  ev.preventDefault();
-  tetris.arrowRight();
+// действие при нажатии кнопок right
+page.btnsRight.forEach((elem) => {
+  elem.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    tetris.arrowRight();
+  });
 });
 
 // действие при нажатии кнопки действия down
