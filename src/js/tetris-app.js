@@ -88,7 +88,7 @@ const page = {
   btnsSpeedBox: document.querySelector(".playing-content__btns-speed-box"),
   btnsLeft: document.querySelectorAll(".btn-left"),
   btnsRight: document.querySelectorAll(".btn-right"),
-  btnDown: document.querySelector(".container__btn-down"),
+  btnsDown: document.querySelectorAll(".btn-down"),
   btnRotate: document.querySelector(".container__btn-rotate"),
   btnDoubleDown: document.querySelector(".container__double-down"),
   btnFullScreen: document.querySelector(".container__btn-full-screen"),
@@ -198,10 +198,12 @@ page.btnsRight.forEach((elem) => {
   });
 });
 
-// действие при нажатии кнопки действия down
-page.btnDown.addEventListener("click", (ev) => {
-  ev.preventDefault();
-  tetris.arrowDown();
+// действие при нажатии кнопок down
+page.btnsDown.forEach((elem) => {
+  elem.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    tetris.arrowDown();
+  });
 });
 
 // действие при нажатии кнопки действия double down
