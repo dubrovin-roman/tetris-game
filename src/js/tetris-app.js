@@ -16,6 +16,20 @@ function createPlayingField(playingField) {
 const playingField = document.querySelector(".container__playing-field");
 createPlayingField(playingField);
 
+// отрисовка чистого игрового поля fullscreen с id на html
+function createPlayingFieldFS(fieldFS) {
+  fieldFS.innerHTML = "";
+  for (let row = 0; row < 20; row++) {
+    for (let col = 0; col < 10; col++) {
+      const tempElem = `<div id="pfFS-${row}-${col}" class="playing-field-fs__cell"></div>`;
+      fieldFS.insertAdjacentHTML("beforeend", tempElem);
+    }
+  }
+}
+
+const fieldFS = document.querySelector(".container-fs__playing-field-fs");
+createPlayingFieldFS(fieldFS);
+
 // отрисовка чистого поля для следующей фигуры с id на html
 function createNextBrickField(nextBrickField) {
   nextBrickField.innerHTML = "";
@@ -45,6 +59,9 @@ mainTheme.addEventListener(
 
 // элементы на странице
 const page = {
+  body: document.querySelector("body"),
+  container: document.querySelector(".container"),
+  containerFS: document.querySelector(".container-fs"),
   playingFieldCells: document.querySelectorAll(".playing-field__cell"),
   levelDisplay: document.querySelector("#level-display"),
   scoreDisplay: document.querySelector("#score-display"),
@@ -73,6 +90,10 @@ const page = {
   btnDown: document.querySelector(".container__btn-down"),
   btnRotate: document.querySelector(".container__btn-rotate"),
   btnDoubleDown: document.querySelector(".container__double-down"),
+  btnFullScreen: document.querySelector(".container__btn-full-screen"),
+  btnFullScreenExit: document.querySelector(
+    ".container-fs__btn-fullscreen-exit"
+  ),
 };
 
 // при загрузке страница переключатели не активны
@@ -185,6 +206,28 @@ page.btnDoubleDown.addEventListener("click", (ev) => {
     if (!tetris.isDblDownPress) clearInterval(tId);
     tetris.arrowDown();
   }, 100);
+});
+
+// действие при нажатии кнопки full screen
+page.btnFullScreen.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  if (!page.container.hasAttribute("style"))
+    page.container.setAttribute("style", "display: none");
+  if (page.containerFS.hasAttribute("style"))
+    page.containerFS.removeAttribute("style");
+
+  page.body.classList.add("body-fs");
+});
+
+// действие при нажатии кнопки fullscreen exit
+page.btnFullScreenExit.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  if (page.container.hasAttribute("style"))
+    page.container.removeAttribute("style");
+  if (!page.containerFS.hasAttribute("style"))
+    page.containerFS.setAttribute("style", "display: none");
+
+  page.body.classList.remove("body-fs");
 });
 
 // кнопка новой игры в модальном окне

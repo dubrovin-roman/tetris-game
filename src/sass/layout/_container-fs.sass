@@ -1,0 +1,13 @@
+.container-fs
+    width: 100%
+    height: 100vh
+    &__playing-field-fs
+    &__btn-fullscreen-exit
+        display: none
+        @include respond(tab-land)
+            display: block
+            position: absolute
+            top: 2%
+            right: 50%
+            transform: translateX(350%)
+            opacity: .3
