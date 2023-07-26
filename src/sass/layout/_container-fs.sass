@@ -10,4 +10,22 @@
             top: 2%
             right: 50%
             transform: translateX(350%)
-            opacity: .3
+            opacity: .4
+    &__btn-left
+        display: none
+        @include respond(tab-land)
+            display: block
+            position: absolute
+            top: 80%
+            right: 50%
+            transform: translateX(-225%)
+            opacity: .4
+    &__btn-right
+        display: none
+        @include respond(tab-land)
+            display: block
+            position: absolute
+            top: 80%
+            right: 50%
+            transform: translateX(350%)
+            opacity: .4

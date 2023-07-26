@@ -86,7 +86,7 @@ const page = {
   toggleFreezeSpeed: document.querySelector("#toggle-freeze-speed"),
   toggleColorMode: document.querySelector("#toggle-color-mode"),
   btnsSpeedBox: document.querySelector(".playing-content__btns-speed-box"),
-  btnLeft: document.querySelector(".container__btn-left"),
+  btnsLeft: document.querySelectorAll(".btn-left"),
   btnRight: document.querySelector(".container__btn-right"),
   btnDown: document.querySelector(".container__btn-down"),
   btnRotate: document.querySelector(".container__btn-rotate"),
@@ -182,10 +182,12 @@ page.btnRotate.addEventListener("click", (ev) => {
   tetris.arrowUp();
 });
 
-// действие при нажатии кнопки действия left
-page.btnLeft.addEventListener("click", (ev) => {
-  ev.preventDefault();
-  tetris.arrowLeft();
+// действие при нажатии кнопок left
+page.btnsLeft.forEach((elem) => {
+  elem.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    tetris.arrowLeft();
+  });
 });
 
 // действие при нажатии кнопки действия right
@@ -213,6 +215,7 @@ page.btnDoubleDown.addEventListener("click", (ev) => {
 // действие при нажатии кнопки full screen
 page.btnFullScreen.addEventListener("click", (ev) => {
   ev.preventDefault();
+  if (!tetris.isColorMod) toggleColorMode();
   if (!page.container.hasAttribute("style"))
     page.container.setAttribute("style", "display: none");
   if (page.containerFS.hasAttribute("style"))
@@ -292,9 +295,15 @@ page.toggleFreezeSpeed.addEventListener("change", function () {
 
 // переключатель color mode
 page.toggleColorMode.addEventListener("change", function () {
+  toggleColorMode();
+});
+
+// функция для переключателя color mode
+function toggleColorMode() {
+  if (!page.toggleColorMode.checked) page.toggleColorMode.checked = true;
   tetris.toggleColorMode();
   toggleFieldsColorMode();
-});
+}
 
 // кнопки изменения скорости
 page.btnsSpeedBox.addEventListener("click", (ev) => {
