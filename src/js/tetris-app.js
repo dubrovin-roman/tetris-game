@@ -90,7 +90,7 @@ const page = {
   btnsRight: document.querySelectorAll(".btn-right"),
   btnsDown: document.querySelectorAll(".btn-down"),
   btnsRotate: document.querySelectorAll(".btn-rotate"),
-  btnDoubleDown: document.querySelector(".container__double-down"),
+  btnsDoubleDown: document.querySelectorAll(".double-down"),
   btnFullScreen: document.querySelector(".container__btn-full-screen"),
   btnFullScreenExit: document.querySelector(
     ".container-fs__btn-fullscreen-exit"
@@ -176,7 +176,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// действие при нажатии кнопки действия rotate
+// действие при нажатии кнопок rotate
 page.btnsRotate.forEach((elem) => {
   elem.addEventListener("click", (ev) => {
     ev.preventDefault();
@@ -208,14 +208,16 @@ page.btnsDown.forEach((elem) => {
   });
 });
 
-// действие при нажатии кнопки действия double down
-page.btnDoubleDown.addEventListener("click", (ev) => {
-  ev.preventDefault();
-  tetris.isDblDownPress = true;
-  const tId = setInterval(() => {
-    if (!tetris.isDblDownPress) clearInterval(tId);
-    tetris.arrowDown();
-  }, 100);
+// действие при нажатии кнопок double down
+page.btnsDoubleDown.forEach((elem) => {
+  elem.addEventListener("click", (ev) => {
+    ev.preventDefault();
+    tetris.isDblDownPress = true;
+    const tId = setInterval(() => {
+      if (!tetris.isDblDownPress) clearInterval(tId);
+      tetris.arrowDown();
+    }, 100);
+  });
 });
 
 // действие при нажатии кнопки full screen
