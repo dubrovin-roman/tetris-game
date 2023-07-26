@@ -95,6 +95,7 @@ const page = {
   btnFullScreenExit: document.querySelector(
     ".container-fs__btn-fullscreen-exit"
   ),
+  btnAudio: document.querySelector(".container-fs__btn-audio"),
 };
 
 // при загрузке страница переключатели не активны
@@ -223,6 +224,11 @@ page.btnsDoubleDown.forEach((elem) => {
 // действие при нажатии кнопки full screen
 page.btnFullScreen.addEventListener("click", (ev) => {
   ev.preventDefault();
+
+  mainTheme.paused
+    ? (page.btnAudio.lastChild.src = "icons/sound-off.svg")
+    : (page.btnAudio.lastChild.src = "icons/sound-on.svg");
+
   if (!tetris.isColorMod) toggleColorMode();
   if (!page.container.hasAttribute("style"))
     page.container.setAttribute("style", "display: none");
@@ -243,6 +249,20 @@ page.btnFullScreenExit.addEventListener("click", (ev) => {
 
   page.body.classList.remove("body-fs");
   page.body.classList.remove("body-fs_color-mode");
+});
+
+// действие при нажатии кнопки audio
+page.btnAudio.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  togglePlay();
+  
+  page.toggleMusic.checked
+    ? (page.toggleMusic.checked = false)
+    : (page.toggleMusic.checked = true);
+
+  mainTheme.paused
+    ? (page.btnAudio.lastChild.src = "icons/sound-off.svg")
+    : (page.btnAudio.lastChild.src = "icons/sound-on.svg");
 });
 
 // кнопка новой игры в модальном окне
@@ -266,8 +286,7 @@ page.btnNewGameModal.addEventListener("click", () => {
 
 // функция для переключателя музыки
 function togglePlay() {
-  if (mainTheme.paused) mainTheme.play();
-  else mainTheme.pause();
+  mainTheme.paused ? mainTheme.play() : mainTheme.pause();
 }
 
 // функция скрытия и показа кнопок изменения скорости
@@ -358,8 +377,9 @@ page.btnBox.addEventListener("click", (ev) => {
 
       if (!mainTheme.paused) {
         togglePlay();
-        if (page.toggleMusic.checked) page.toggleMusic.checked = false;
-        else page.toggleMusic.checked = true;
+        page.toggleMusic.checked
+          ? (page.toggleMusic.checked = false)
+          : (page.toggleMusic.checked = true);
       }
 
       tetris.pause();
@@ -393,8 +413,9 @@ page.btnBox.addEventListener("click", (ev) => {
         if (!tetris.isPause) {
           if (!mainTheme.paused) {
             togglePlay();
-            if (page.toggleMusic.checked) page.toggleMusic.checked = false;
-            else page.toggleMusic.checked = true;
+            page.toggleMusic.checked
+              ? (page.toggleMusic.checked = false)
+              : (page.toggleMusic.checked = true);
           }
           tetris.pause();
         }
