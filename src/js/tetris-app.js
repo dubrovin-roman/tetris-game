@@ -96,6 +96,7 @@ const page = {
     ".container-fs__btn-fullscreen-exit"
   ),
   btnAudio: document.querySelector(".container-fs__btn-audio"),
+  btnPauseFS: document.querySelector(".container-fs__btn-pause"),
 };
 
 // при загрузке страница переключатели не активны
@@ -255,10 +256,21 @@ page.btnFullScreenExit.addEventListener("click", (ev) => {
 page.btnAudio.addEventListener("click", (ev) => {
   ev.preventDefault();
   togglePlay();
-  
+
   page.toggleMusic.checked
     ? (page.toggleMusic.checked = false)
     : (page.toggleMusic.checked = true);
+
+  mainTheme.paused
+    ? (page.btnAudio.lastChild.src = "icons/sound-off.svg")
+    : (page.btnAudio.lastChild.src = "icons/sound-on.svg");
+});
+
+// действие при нажатии кнопки pauseFS
+page.btnPauseFS.addEventListener("click", (ev) => {
+  ev.preventDefault();
+  
+  setPause();
 
   mainTheme.paused
     ? (page.btnAudio.lastChild.src = "icons/sound-off.svg")
@@ -347,6 +359,22 @@ page.btnsSpeedBox.addEventListener("click", (ev) => {
   }
 });
 
+// функция для кнопки пауза
+function setPause() {
+  // если игра не запущена кнопка не сработает
+  if (tetris.gameOver) return;
+
+  if (!mainTheme.paused) {
+    togglePlay();
+    page.toggleMusic.checked
+      ? (page.toggleMusic.checked = false)
+      : (page.toggleMusic.checked = true);
+  }
+
+  tetris.pause();
+  tetris.showPauseModal();
+}
+
 // кнопки главного меню
 page.btnBox.addEventListener("click", (ev) => {
   ev.preventDefault();
@@ -372,18 +400,7 @@ page.btnBox.addEventListener("click", (ev) => {
     }
     // кнопка паузы
     if (ev.target.id == "btn-pause") {
-      // если игра не запущена кнопка не сработает
-      if (tetris.gameOver) return;
-
-      if (!mainTheme.paused) {
-        togglePlay();
-        page.toggleMusic.checked
-          ? (page.toggleMusic.checked = false)
-          : (page.toggleMusic.checked = true);
-      }
-
-      tetris.pause();
-      tetris.showPauseModal();
+      setPause();
     }
     // кнопка новой игры
     if (ev.target.id == "btn-new-game") {
